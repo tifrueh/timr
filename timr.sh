@@ -2,18 +2,20 @@
 
 progname="$(basename $0)"
 
-help="usage: ${progname} <duration> [ <message> ] [ <urgency> ]
+help="usage: ${progname} [ -q | --quiet ] <duration> [ <message> ] [ <urgency> ]
 
 options:
 
-    duration    The amount of time to wait (format HH+:MM:SS).
-                As a regular expression for the nerds:
-                [0-9][0-9]*:[0-5][0-9]:[0-5][0-9]
+    -q, --quiet         Don't print anything.
 
-    message     The message to display in the notification (is passed directly
-                to notify-send(1)).
+    duration            The amount of time to wait (format HH+:MM:SS). As a
+                        regular expression for the nerds:
+                        [0-9][0-9]*:[0-5][0-9]:[0-5][0-9]
 
-    urgency     The urgency to pass to notify-send(1).
+    message             The message to display in the notification (is passed
+                        directly to notify-send(1)).
+
+    urgency             The urgency to pass to notify-send(1).
 "
 
 time_regex='[0-9][0-9]*:[0-5][0-9]:[0-5][0-9]'
@@ -31,6 +33,14 @@ fi
 if [ "$1" = "-h" -o "$1" = "--help" ]; then
     printf '%s' "$help"
     exit 0
+fi
+
+# Check if we should be quiet.
+if [ "$1" = "-q" -o "$1" = "--quiet" ]; then
+    quiet=1
+    shift
+else
+    quiet=0
 fi
 
 # Test if time format is correct.
@@ -63,6 +73,7 @@ end_time=$(( $now_time + $time_s ))
 
 # Sleep for the specified amount.
 while rest_time=$(( $end_time - $(date +%s) )) && [ $rest_time -ge 0 ]; do
+    [ $quiet -eq 1 ] && continue
     rest_time_hh=$(( $rest_time / 3600 ))
     rest_time_mm=$(( ($rest_time % 3600) / 60 ))
     rest_time_ss=$(( ($rest_time % 3600) % 60 ))
