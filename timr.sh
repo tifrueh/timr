@@ -85,7 +85,8 @@ while rest_time=$(( end_time - $(date +%s) )) && [ $rest_time -ge 0 ]; do
     [ $rest_time -eq 0 ] && break
 done
 
-printf '\n'
+# Print a closing newline if we're not quiet.
+[ $quiet -eq 0 ] && printf '\n'
 
 # Notify the terminal.
 tput bel
