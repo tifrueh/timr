@@ -27,12 +27,6 @@ time_hh_regex='\([0-9][0-9]*\):[0-5][0-9]:[0-5][0-9]'
 time_mm_regex='[0-9][0-9]*:\([0-5][0-9]\):[0-5][0-9]'
 time_ss_regex='[0-9][0-9]*:[0-5][0-9]:\([0-5][0-9]\)'
 
-# Display help if number of options isn't correct.
-if [ $# -lt 1 -o $# -gt 3 ]; then
-    printf '%s' "$help"
-    exit 1
-fi
-
 # Display help if requested.
 if [ "$1" = "-h" -o "$1" = "--help" ]; then
     printf '%s' "$help"
@@ -45,6 +39,12 @@ if [ "$1" = "-q" -o "$1" = "--quiet" ]; then
     shift
 else
     quiet=0
+fi
+
+# Display help if number of arguments isn't correct.
+if [ $# -lt 1 -o $# -gt 3 ]; then
+    printf '%s' "$help"
+    exit 1
 fi
 
 # Test if time format is correct.
