@@ -1,6 +1,6 @@
 #!/bin/sh
 
-progname="$(basename $0)"
+progname="$(basename "$0")"
 
 help="usage: ${progname} [ -q | --quiet ] <duration> [ <message> ] [ <urgency> ]
 
@@ -28,13 +28,13 @@ time_mm_regex='[0-9][0-9]*:\([0-5][0-9]\):[0-5][0-9]'
 time_ss_regex='[0-9][0-9]*:[0-5][0-9]:\([0-5][0-9]\)'
 
 # Display help if requested.
-if [ "$1" = "-h" -o "$1" = "--help" ]; then
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     printf '%s' "$help"
     exit 0
 fi
 
 # Check if we should be quiet.
-if [ "$1" = "-q" -o "$1" = "--quiet" ]; then
+if [ "$1" = "-q" ] || [ "$1" = "--quiet" ]; then
     quiet=1
     shift
 else
@@ -42,7 +42,7 @@ else
 fi
 
 # Display help if number of arguments isn't correct.
-if [ $# -lt 1 -o $# -gt 3 ]; then
+if [ $# -lt 1 ] || [ $# -gt 3 ]; then
     printf '%s' "$help"
     exit 1
 fi
@@ -71,16 +71,16 @@ fi
 time_hh=$( expr "$1" : "$time_hh_regex" )
 time_mm=$( expr "$1" : "$time_mm_regex" )
 time_ss=$( expr "$1" : "$time_ss_regex" )
-time_s=$(( $time_ss + 60*$time_mm + 3600*$time_hh ))
+time_s=$(( time_ss + 60*time_mm + 3600*time_hh ))
 now_time=$(date +%s)
-end_time=$(( $now_time + $time_s ))
+end_time=$(( now_time + time_s ))
 
 # Spin for the specified amount.
-while rest_time=$(( $end_time - $(date +%s) )) && [ $rest_time -ge 0 ]; do
+while rest_time=$(( end_time - $(date +%s) )) && [ $rest_time -ge 0 ]; do
     [ $quiet -eq 1 ] && continue
-    rest_time_hh=$(( $rest_time / 3600 ))
-    rest_time_mm=$(( ($rest_time % 3600) / 60 ))
-    rest_time_ss=$(( ($rest_time % 3600) % 60 ))
+    rest_time_hh=$(( rest_time / 3600 ))
+    rest_time_mm=$(( (rest_time % 3600) / 60 ))
+    rest_time_ss=$(( (rest_time % 3600) % 60 ))
     printf "\r%$(( COLUMNS - 6 ))d:%02d:%02d" "$rest_time_hh" "$rest_time_mm" "$rest_time_ss"
     [ $rest_time -eq 0 ] && break
 done
