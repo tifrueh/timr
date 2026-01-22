@@ -58,10 +58,19 @@ time_hh=$( expr "$1" : "$time_hh_regex" )
 time_mm=$( expr "$1" : "$time_mm_regex" )
 time_ss=$( expr "$1" : "$time_ss_regex" )
 time_s=$(( $time_ss + 60*$time_mm + 3600*$time_hh ))
-printf 'sleeping for %ds\n' "$time_s"
+now_time=$(date +%s)
+end_time=$(( $now_time + $time_s ))
 
 # Sleep for the specified amount.
-sleep $time_s
+while rest_time=$(( $end_time - $(date +%s) )) && [ $rest_time -ge 0 ]; do
+    rest_time_hh=$(( $rest_time / 3600 ))
+    rest_time_mm=$(( ($rest_time % 3600) / 60 ))
+    rest_time_ss=$(( ($rest_time % 3600) % 60 ))
+    printf "\r%$(( COLUMNS - 6 ))d:%02d:%02d" "$rest_time_hh" "$rest_time_mm" "$rest_time_ss"
+    [ $rest_time -eq 0 ] && break
+done
+
+printf '\n'
 
 # Notify the terminal.
 tput bel
