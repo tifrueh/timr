@@ -5,10 +5,14 @@ progname="$(basename $0)"
 help="usage: ${progname} <duration> [ <message> ] [ <urgency> ]
 
 options:
+
     duration    The amount of time to wait (format HH+:MM:SS).
                 As a regular expression for the nerds:
                 [0-9][0-9]*:[0-5][0-9]:[0-5][0-9]
-    message     The message to display in the notification (is passed directly to notify-send(1)).
+
+    message     The message to display in the notification (is passed directly
+                to notify-send(1)).
+
     urgency     The urgency to pass to notify-send(1).
 "
 
