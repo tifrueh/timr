@@ -75,7 +75,7 @@ time_s=$(( $time_ss + 60*$time_mm + 3600*$time_hh ))
 now_time=$(date +%s)
 end_time=$(( $now_time + $time_s ))
 
-# Sleep for the specified amount.
+# Spin for the specified amount.
 while rest_time=$(( $end_time - $(date +%s) )) && [ $rest_time -ge 0 ]; do
     [ $quiet -eq 1 ] && continue
     rest_time_hh=$(( $rest_time / 3600 ))
