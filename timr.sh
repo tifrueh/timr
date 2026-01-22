@@ -6,7 +6,11 @@ help="usage: ${progname} [ -q | --quiet ] <duration> [ <message> ] [ <urgency> ]
 
 options:
 
+    -h, --help          Show this help message.
+
     -q, --quiet         Don't print anything.
+
+arguments:
 
     duration            The amount of time to wait (format HH+:MM:SS). As a
                         regular expression for the nerds:
